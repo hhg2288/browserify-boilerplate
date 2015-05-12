@@ -1,10 +1,10 @@
-Introduction to browserify
-==========================
+TA frontoffice web application
+==============================
 
 ####Setup
 
 ```
->npm install
+>npm install # should trigger bower install
 >source env.sh
 ```
 
