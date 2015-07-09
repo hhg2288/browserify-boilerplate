@@ -1,32 +1,24 @@
 require('angular');
-require('angular-bootstrap');
-require('./modules/sessions/detail');
+require('angular-material');
+require('../bower_components/angular-youtube-mb/src/angular-youtube-embed');
+
+require('./modules/home/home');
 
 (function(){
 'use strict';
 
-angular.module('ta', [
-  'ui.bootstrap',
+angular.module('ag', [
   require('angular-ui-router'),
-  'ta.sessions.detail'
+	'ngMaterial',
+	'youtube-embed',
+	'ta.home'
 ])
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
   // For any unmatched url, redirect to /state1
-  $urlRouterProvider.otherwise("/session");
-  
-  // Now set up the states
-  // $stateProvider
-  //   .state('state1', {
-  //     url: "/",
-  //     templateUrl: "partials/beep.html"
-  //   })
-  //   .state('state1.list', {
-  //     url: "/list",
-  //     templateUrl: "partials/state1.list.html",
-  //     controller: function($scope) {
-  //       $scope.items = ["A", "List", "Of", "Items"];
-  //     }
-  //   });
+  $urlRouterProvider.otherwise("/");
+
+	$mdThemingProvider.theme('default')
+		.primaryPalette('blue-grey');
 
 });
 

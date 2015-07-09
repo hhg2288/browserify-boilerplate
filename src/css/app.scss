@@ -1,0 +1,88 @@
+
+@import "../../bower_components/bourbon/app/assets/stylesheets/bourbon";
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+
+.main-wrapper {
+	@include size(100%);
+	@include position(absolute, 0 0 0 0);
+
+	@include display(flex);
+	@include flex-direction(column);
+
+}
+
+md-toolbar {
+	@include position(fixed, 0 0 null 0);
+	z-index: 11;
+}
+
+.main-content	{
+	@include flex(1);
+
+	md-content {
+		padding-top: 264px;
+	}
+}
+
+
+
+
+.l-video-frame {
+	@include size(100% 200px);
+	@include position(fixed, 64px 0 null 0);
+	z-index: 10;
+
+	iframe {
+		@include size(100%);
+	}
+}
+
+@media only screen and (min-width:600px) {
+
+	.l-video-frame {
+		height: 400px;
+	}
+
+	.main-content md-content { padding-top: 464px; }
+}
+
+@media only screen and (min-width:1024px) {
+
+	.l-video-frame {
+		height: 500px;
+	}
+
+	.main-content md-content { padding-top: 564px; }
+}
+
+@media only screen and (min-width:1400px) {
+
+	.l-video-frame {
+		@include size(50% 100%);
+		@include position(fixed, 0 null 0 0);
+	}
+
+	.main-content {
+
+		md-content {
+			width: 50%;
+			float: right;
+			padding-top: 64px;
+		}
+	}
+}
+
+
+.list-item {
+	&:nth-child(even) {
+		background-color: #f5f5f5;
+	}
+
+	.question {
+		margin: 1em 0;
+	}
+}

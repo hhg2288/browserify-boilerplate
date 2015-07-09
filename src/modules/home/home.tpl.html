@@ -1,0 +1,23 @@
+<div class="main-wrapper">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>
+				<span>#askGaryVee Questions</span>
+			</h2>
+		</div>
+	</md-toolbar>
+	<div class="main-content">
+		<div class="l-video-frame">
+			<youtube-video video-url="home.videoUrl" player="home.videoPlayer" player-vars="home.playerVars"></youtube-video>
+		</div>
+		<md-content>
+			<div class="l-list-container">
+				<md-list>
+					<md-list-item ng-click="home.changeVideo(item.url)" class="list-item" ng-repeat="item in home.questions">
+						<p class="question" >{{ item.question }}</p>
+					</md-list-item>
+				</md-list>
+			</div>
+		</md-content>
+	</div>
+</div>

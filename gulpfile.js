@@ -10,6 +10,7 @@ var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var assign = require('lodash.assign');
 var livereload = require('gulp-livereload');
+var sass = require('gulp-sass');
 
 /*
 	A more sophisticated browserify build & watch
@@ -86,6 +87,15 @@ gulp.task('html', function(){
 		.pipe(livereload());
 });
 
+gulp.task('sass', function () {
+
+	return gulp.src('./src/css/app.scss')
+	.pipe(sass())
+	.pipe(gulp.dest('./dist/css'));
+});
+
+
+
 gulp.task('clean', function(done) {
   del(['./dist'], done);
 });
@@ -93,6 +103,7 @@ gulp.task('clean', function(done) {
 gulp.task('watch', ['watchify'], function() {
     livereload.listen();
     gulp.watch(['./src/**/*.html'], ['html']);
+		gulp.watch("./src/**/*.scss", ['sass']);
 });
 
-gulp.task('build', ['html', 'js']);
+gulp.task('build', ['html', 'js', 'sass']);
