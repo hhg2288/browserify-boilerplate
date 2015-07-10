@@ -1,0 +1,17 @@
+{
+  "global": {
+    "parseVersion": "1.4.2"
+  },
+  "applications": {
+    "_default": {
+      "link": "askGaryVee"
+    },
+    "askGaryVee": {
+      "applicationId": "hAgbhHCW5YKXe4OXvaAWnbU0m8Q0ckaNKOcE0FIN",
+      "masterKey": "fNt6GAi4AyVGjiuo63AZYJGdlj8gsuvjTRpnINys"
+    },
+    "cloudCode": {
+      "link": "askGaryVee"
+    }
+  }
+}

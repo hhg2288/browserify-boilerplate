@@ -1,6 +1,8 @@
 require('angular');
 require('angular-material');
 
+require('../common/api');
+
 (function(){
 	'use strict';
 
@@ -8,7 +10,8 @@ require('angular-material');
 		.module('ta.home', [
 		require('angular-ui-router'),
 		'ngAnimate',
-		'ngMaterial'
+		'ngMaterial',
+		'common.api'
 		])
 
 		.config(HomeConfig)
@@ -31,141 +34,28 @@ require('angular-material');
 		});
 	}
 
-	function HomeCtrl() {
+	function HomeCtrl(Api) {
+		
+		var self = this;
+		self.questions = [];
+		self.videoUrl = "https://www.youtube.com/watch?v=DKXoyMTTu3I";
 
-		var vm = this;
-		vm.videoUrl = "https://www.youtube.com/watch?v=DKXoyMTTu3I";
+		Api.getAll().then(function(resp){
 
-		vm.questions = [
-			{
-				"question": "Which industries will see the most disruption 10 years from now?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=1m33s"
-			},
-			{
-				"question": "How does you stay in the moment, actively listen, and focus, when there are so many different things on his mind all the time?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=4m29s"
-			},
-			{
-				"question": "Do you think recent changes in Fantasy Sports will further change how people consume sports and how sports are marketed to consumers? Will the future hold less loyalty to specific teams, and more loyalty to individual players? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=8m22s"
-			},
-			{
-				"question": "Do you have any suggestions for moving fast when an external partner doesn't share your same bias for action? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=12m08s"
-			},
-			{
-				"question": "What do you think about the phrase, 'Any press is good press'?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=15m08s"
-			},
-			{
-				"question": "What was your first screen name?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=17m01s"
-			},
-			{
-				"question": "Which industries will see the most disruption 10 years from now?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=1m33s"
-			},
-			{
-				"question": "How does you stay in the moment, actively listen, and focus, when there are so many different things on his mind all the time?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=4m29s"
-			},
-			{
-				"question": "Do you think recent changes in Fantasy Sports will further change how people consume sports and how sports are marketed to consumers? Will the future hold less loyalty to specific teams, and more loyalty to individual players? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=8m22s"
-			},
-			{
-				"question": "Do you have any suggestions for moving fast when an external partner doesn't share your same bias for action? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=12m08s"
-			},
-			{
-				"question": "What do you think about the phrase, 'Any press is good press'?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=15m08s"
-			},
-			{
-				"question": "What was your first screen name?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=17m01s"
-			},
-			{
-				"question": "Which industries will see the most disruption 10 years from now?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=1m33s"
-			},
-			{
-				"question": "How does you stay in the moment, actively listen, and focus, when there are so many different things on his mind all the time?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=4m29s"
-			},
-			{
-				"question": "Do you think recent changes in Fantasy Sports will further change how people consume sports and how sports are marketed to consumers? Will the future hold less loyalty to specific teams, and more loyalty to individual players? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=8m22s"
-			},
-			{
-				"question": "Do you have any suggestions for moving fast when an external partner doesn't share your same bias for action? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=12m08s"
-			},
-			{
-				"question": "What do you think about the phrase, 'Any press is good press'?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=15m08s"
-			},
-			{
-				"question": "What was your first screen name?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=17m01s"
-			},
-			{
-				"question": "Which industries will see the most disruption 10 years from now?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=1m33s"
-			},
-			{
-				"question": "How does you stay in the moment, actively listen, and focus, when there are so many different things on his mind all the time?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=4m29s"
-			},
-			{
-				"question": "Do you think recent changes in Fantasy Sports will further change how people consume sports and how sports are marketed to consumers? Will the future hold less loyalty to specific teams, and more loyalty to individual players? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=8m22s"
-			},
-			{
-				"question": "Do you have any suggestions for moving fast when an external partner doesn't share your same bias for action? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=12m08s"
-			},
-			{
-				"question": "What do you think about the phrase, 'Any press is good press'?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=15m08s"
-			},
-			{
-				"question": "What was your first screen name?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=17m01s"
-			},
-			{
-				"question": "Which industries will see the most disruption 10 years from now?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=1m33s"
-			},
-			{
-				"question": "How does you stay in the moment, actively listen, and focus, when there are so many different things on his mind all the time?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=4m29s"
-			},
-			{
-				"question": "Do you think recent changes in Fantasy Sports will further change how people consume sports and how sports are marketed to consumers? Will the future hold less loyalty to specific teams, and more loyalty to individual players? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=8m22s"
-			},
-			{
-				"question": "Do you have any suggestions for moving fast when an external partner doesn't share your same bias for action? ",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=12m08s"
-			},
-			{
-				"question": "What do you think about the phrase, 'Any press is good press'?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=15m08s"
-			},
-			{
-				"question": "What was your first screen name?",
-				"url": "https://www.youtube.com/watch?v=M8Cmgs5kPpA&t=17m01s"
-			}
-		];
+			resp.models.forEach(function(el){
+				self.questions.push(el.attributes);
+			});
 
-		vm.changeVideo = function(url) {
-			vm.videoUrl = url;
+		});
+
+		self.changeVideo = function(url) {
+			console.log(url);
+			self.videoUrl = url;
 		};
 
 		this.playerVars = {
-			controls: 0,
-			autoplay: 0
+			controls: 1,
+			autoplay: 1
 		};
 
 	}
