@@ -2,6 +2,7 @@ require('angular');
 require('angular-material');
 
 require('../common/api');
+require('../../../bower_components/angular-youtube-mb/src/angular-youtube-embed');
 
 (function(){
 	'use strict';
@@ -11,6 +12,7 @@ require('../common/api');
 		require('angular-ui-router'),
 		'ngAnimate',
 		'ngMaterial',
+		'youtube-embed',
 		'common.api'
 		])
 
@@ -34,11 +36,11 @@ require('../common/api');
 		});
 	}
 
-	function HomeCtrl(Api) {
+	function HomeCtrl(Api, youtubeEmbedUtils) {
 		
 		var self = this;
 		self.questions = [];
-		self.videoUrl = "https://www.youtube.com/watch?v=DKXoyMTTu3I";
+		self.videoUrl = "http://www.youtube.com/watch?v=DKXoyMTTu3I";
 
 		Api.getAll().then(function(resp){
 
@@ -48,14 +50,14 @@ require('../common/api');
 
 		});
 
-		self.changeVideo = function(url) {
-			console.log(url);
-			self.videoUrl = url;
+		self.changeVideo = function(q) {
+			self.videoPlayer.loadVideoById(q.videoId, q.timestamp, "hires");
 		};
 
 		this.playerVars = {
 			controls: 1,
-			autoplay: 1
+			autoplay: 1,
+			playsinline: 1
 		};
 
 	}

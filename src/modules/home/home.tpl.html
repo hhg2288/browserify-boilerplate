@@ -4,6 +4,8 @@
 			<h2>
 				<span>#askGaryVee Questions</span>
 			</h2>
+			<span flex></span>
+			<input type="search" placeholder="filter" ng-model="inputFilter"/>
 		</div>
 	</md-toolbar>
 	<div class="main-content">
@@ -13,9 +15,16 @@
 		<md-content>
 			<div class="l-list-container">
 				<md-list>
-					<md-list-item ng-click="home.changeVideo(item.link)" class="list-item" ng-repeat="item in home.questions">
-						<p class="question" >{{ item.question }}</p>
+					<md-list-item ng-click="home.changeVideo(item)" class="list-item" ng-repeat="item in items = (home.questions | filter:inputFilter | orderBy: '-episode')" layout="column">
+						<p class="question">{{ item.question }}</p>
+						<div class="q-footer" layout="row">
+							<p>
+								<span class="episode">episode {{ item.episode }}</span>
+								<span class="platform"> - platform: {{ item.platform }}</span>
+							</p>
+						</div>
 					</md-list-item>
+					<div class="no-questions" ng-if="!items.length">NO HAY NADA!</div>
 				</md-list>
 			</div>
 		</md-content>

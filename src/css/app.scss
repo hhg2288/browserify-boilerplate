@@ -35,6 +35,7 @@ md-toolbar {
 	@include size(100% 200px);
 	@include position(fixed, 64px 0 null 0);
 	z-index: 10;
+	background: black;
 
 	iframe {
 		@include size(100%);
@@ -84,5 +85,30 @@ md-toolbar {
 
 	.question {
 		margin: 1em 0;
+	}
+}
+
+
+.md-list-item-inner {
+	@include flex-direction(column);
+	@include align-items(start);
+
+	.question {
+		font-weight: bold;
+		font-size: 1.2em;
+		width: 100%;
+		text-align: left;
+	}
+
+	.q-footer {
+
+		width: 100%;
+		text-align: left;
+
+		p {
+			margin: 0 0 1em 0;
+		}
+
+		.platform { color: gray; font-weight: 100; }
 	}
 }
