@@ -4,17 +4,15 @@
   "description": "#AskGaryVee App",
   "main": "index.js",
   "scripts": {
-		"postinstall": "./node_modules/.bin/bower install; ./node_modules/.bin/gulp build;",
+		"postinstall": "./node_modules/.bin/bower install; ./node_modules/gulp/bin/gulp.js build;",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "me@hherrerag.com",
   "devDependencies": {
-    "bower": "^1.4.1",
     "browserify": "^9.0.8",
     "del": "^1.1.1",
-    "gulp": "^3.8.11",
     "gulp-livereload": "^3.8.0",
     "gulp-sass": "^2.0.3",
     "gulp-sourcemaps": "^1.5.2",
@@ -31,6 +29,7 @@
     "angular-material": "^0.10.0",
     "angular-ui-router": "^0.2.15",
     "bower": "^1.4.1",
+    "gulp": "^3.8.11",
     "compression": "^1.4.3",
     "express": "^4.12.3",
     "http-browserify": "^1.7.0",
