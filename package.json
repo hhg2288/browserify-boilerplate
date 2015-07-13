@@ -15,16 +15,7 @@
   "keywords": [],
   "author": "me@hherrerag.com",
   "devDependencies": {
-    "browserify": "^9.0.8",
-    "del": "^1.1.1",
-    "gulp-livereload": "^3.8.0",
-    "gulp-sass": "^2.0.3",
-    "gulp-sourcemaps": "^1.5.2",
-    "gulp-util": "^3.0.4",
-    "lodash.assign": "^3.1.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.1.2"
+
   },
   "dependencies": {
     "angular": "^1.4.2",
@@ -37,6 +28,16 @@
     "compression": "^1.4.3",
     "express": "^4.12.3",
     "http-browserify": "^1.7.0",
-    "morgan": "^1.5.2"
+    "morgan": "^1.5.2",
+		"browserify": "^9.0.8",
+		"del": "^1.1.1",
+		"gulp-livereload": "^3.8.0",
+		"gulp-sass": "^2.0.3",
+		"gulp-sourcemaps": "^1.5.2",
+		"gulp-util": "^3.0.4",
+		"lodash.assign": "^3.1.0",
+		"vinyl-buffer": "^1.0.0",
+		"vinyl-source-stream": "^1.1.0",
+		"watchify": "^3.1.2"
   }
 }
