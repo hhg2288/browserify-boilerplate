@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "#AskGaryVee App",
   "main": "index.js",
+	"engines": {
+		"node": "0.10.33"
+	},
   "scripts": {
 		"postinstall": "./node_modules/.bin/bower install; ./node_modules/gulp/bin/gulp.js build;",
     "start": "node server.js",
