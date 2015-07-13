@@ -4,7 +4,8 @@
   "description": "#AskGaryVee App",
   "main": "index.js",
 	"engines": {
-		"node": "0.10.33"
+		"node": "0.10.33",
+		"npm": "2.1.x"
 	},
   "scripts": {
 		"postinstall": "./node_modules/.bin/bower install; ./node_modules/gulp/bin/gulp.js build;",
