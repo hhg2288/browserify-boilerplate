@@ -1,56 +1,85 @@
+var _ = require('underscore');
 var oauth = require("cloud/libs/oauth.js");
 
-Parse.Cloud.job("twitterFeed", function(request, status) {
+Parse.Cloud.job("twitterFeed", function (request, status) {
+
 	Parse.Cloud.useMasterKey();
 
+	// These are the Twitter users you want Tweets from, excluding the '@'
+	var screenNames = [
+		"nannerb",
+		"parseit"
+	];
 
 	var promise = Parse.Promise.as();
 
-	promise = promise.then(function() {
-		return getTweets();
+	_.each(screenNames, function (screenName) {
+
+		promise = promise.then(function () {
+
+			return getTweets(screenName);
+
+		});
+
 	});
 
-	Parse.Promise.when(promise).then(function() {
-		status.success("tweets Saved!");
-	}, function(error) {
-		status.error("Tweets failed to update", error);
+	Parse.Promise.when(promise).then(function () {
+
+		status.success("Tweets saved");
+
+	}, function (error) {
+
+		status.error("Tweets failed to update");
+
 	});
 
 });
 
+function getTweets(screenName) {
 
-function getTweets() {
 	var promise = new Parse.Promise();
-	var Tweets = Parse.Object.extend("Tweets");
-	var query = new Parse.Query(Tweets);
-	var urlLink = "https://api.twitter.com/1.1/search/tweets.json?q=%23askGaryVee%20%3F&src=typd&vertical=default&count=100";
 
-	query.descending("id_str");
+	var Tweets = Parse.Object.extend("Tweets");
+
+	var query = new Parse.Query(Tweets);
+
+	query.equalTo("screen_name", screenName);
+
+	query.descending("id_str")
+
 	query.limit(1);
 
-	query.find().then(function(results) {
-		console.log("RESULTS!!!! = ", results);
-		if (results.length > 0) {
-			var lastTweet = results[0].get("id_str");
-			urlLink = urlLink + "&max_id=" + lastTweet;
+	query.find().then(function (results) {
+
+		if (results.length === 0) {
+			// If this is the first time this script has run, then we need don't
+			// need to have the since_id param
+
+			var urlLink = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + screenName + "&exclude_replies=true&include_rts=false&count=100";
+
+		} else {
+
+			var lastTweetId = results[0].get("id_str");
+
+			var urlLink = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + screenName + "&exclude_replies=true&include_rts=false&since_id=" + lastTweetId;
+
 		}
+		;
 
-		var consumerSecret = "Ei2C3mCkWGccG9i4aPxsoNFwVtXHD78mOD0SkwMSfzUWQjyknf";
-		var tokenSecret = "5OY4RXy2rLpWA5WNm2gwk4bh0Ezkf9N2pDueaOtZtzSQj";
-		var oauth_consumer_key = "rjgtePJyf2axZ8CAz1JyuCZ3I";
-		var oauth_token = "24702345-jxHSkbtX0Y9lEWW8JRDI5H0Fzbm1e2CkuOTHDSORg";
-
-		var nonce = oauth.nonce(32);
-		var ts = Math.floor(new Date().getTime() / 1000);
-		var timestamp = ts.toString();
+		var consumerSecret = "";
+		var tokenSecret = "";
+		var oauth_consumer_key = "";
+		var oauth_token = "";
 
 		var nonce = oauth.nonce(32);
 		var ts = Math.floor(new Date().getTime() / 1000);
 		var timestamp = ts.toString();
+
 		var accessor = {
 			consumerSecret: consumerSecret,
 			tokenSecret: tokenSecret
 		};
+
 		var params = {
 			oauth_version: "1.0",
 			oauth_consumer_key: oauth_consumer_key,
@@ -59,6 +88,7 @@ function getTweets() {
 			oauth_nonce: nonce,
 			oauth_signature_method: "HMAC-SHA1"
 		};
+
 		var message = {
 			method: "GET",
 			action: urlLink,
@@ -66,6 +96,7 @@ function getTweets() {
 		};
 
 		oauth.SignatureMethod.sign(message, accessor);
+
 		var normPar = oauth.SignatureMethod.normalizeParameters(message.parameters);
 		var baseString = oauth.SignatureMethod.getBaseString(message);
 		var sig = oauth.getParameter(message.parameters, "oauth_signature") + "=";
@@ -79,21 +110,24 @@ function getTweets() {
 			},
 			success: function (httpResponse) {
 
-				var resp = JSON.parse(httpResponse.text);
-				var data = resp.statuses;
+				var data = JSON.parse(httpResponse.text);
 
 				var tweets = new Array();
 
 				for (var i = 0; i < data.length; i++) {
-					var Tweets = Parse.Object.extend("Tweets"),
-					tweet = new Tweets();
 
-					var content = data[i];
-					tweet.set("question", content.text);
+					var Tweets = Parse.Object.extend("Tweets"),
+					tweet = new Tweets(),
+					content = data[i];
+
+					tweet.set("text", content.text);
 					tweet.set("source", content.source);
-					tweet.set("created_at", content.created_at );
+					tweet.set("retweet_count", content.retweet_count);
+					tweet.set("created_at", content.created_at);
+					tweet.set("favorite_count", content.favorite_count);
+					tweet.set("retweeted", content.retweeted);
 					tweet.set("id_str", content.id_str);
-					tweet.set("platform", "twitter");
+					tweet.set("screen_name", screenName);
 
 					tweets.push(tweet);
 
