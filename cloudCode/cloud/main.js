@@ -62,6 +62,7 @@ function getTweets() {
 	var urlLink = "https://api.twitter.com/1.1/search/tweets.json?q=%23askGaryVee%20%3F&src=typd&vertical=default&count=100";
 
 	query.descending("id_str");
+	//query.ascending("id_str");
 	query.limit(1);
 
 	query.find().then(function(results) {
@@ -69,6 +70,7 @@ function getTweets() {
 		if (results.length > 0) {
 			var lastTweet = results[0].get("id_str");
 			urlLink = urlLink + "&since_id=" + lastTweet;
+			//urlLink = urlLink + "&max_id=" + lastTweet;
 		}
 
 		var consumerSecret = "Ei2C3mCkWGccG9i4aPxsoNFwVtXHD78mOD0SkwMSfzUWQjyknf";
