@@ -19,6 +19,42 @@ Parse.Cloud.job("twitterFeed", function(request, status) {
 });
 
 
+
+Parse.Cloud.job("removeDuplicateItems", function(request, status) {
+	Parse.Cloud.useMasterKey();
+	var _ = require("underscore");
+
+	var hashTable = {};
+
+	function hashKeyForTestItem(item) {
+		var fields = ["question", "id_str"];
+		var hashKey = "";
+		_.each(fields, function (field) {
+			hashKey += item.get(field) + "/" ;
+		});
+		return hashKey;
+	}
+
+	var testItemsQuery = new Parse.Query("Tweets");
+	testItemsQuery.each(function (item) {
+		var key = hashKeyForTestItem(item);
+
+		if (key in hashTable) { // this item was seen before, so destroy this
+			return item.destroy();
+		} else { // it is not in the hashTable, so keep it
+			hashTable[key] = 1;
+		}
+
+	}).then(function() {
+		status.success("Migration completed successfully.");
+	}, function(error) {
+		status.error("Uh oh, something went wrong.", error);
+	});
+});
+
+
+
+
 function getTweets() {
 	var promise = new Parse.Promise();
 	var Tweets = Parse.Object.extend("Tweets");

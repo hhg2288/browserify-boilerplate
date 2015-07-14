@@ -15,7 +15,7 @@
 
 }
 
-md-toolbar {
+.topbar {
 	@include position(fixed, 0 0 null 0);
 	z-index: 11;
 }
@@ -25,66 +25,34 @@ md-toolbar {
 
 	md-content {
 		padding-top: 264px;
+		padding-bottom: 64px;
 	}
+}
+
+.footer {
+	@include position(fixed, null 0 0 0);
+	z-index: 11;
 }
 
 
 
 
 .l-video-frame {
-	@include size(100% 200px);
-	@include position(fixed, 64px 0 null 0);
+	@include size(100% 264px);
+	@include position(fixed, 0 0 null 0);
+	padding-top: 64px;
 	z-index: 10;
 	background: black;
+	box-sizing: border-box;
 
 	iframe {
 		@include size(100%);
 	}
 }
 
-@media only screen and (min-width:600px) {
-
-	.l-video-frame {
-		height: 400px;
-	}
-
-	.main-content md-content { padding-top: 464px; }
-}
-
-@media only screen and (min-width:1024px) {
-
-	.l-video-frame {
-		height: 500px;
-	}
-
-	.main-content md-content { padding-top: 564px; }
-}
-
-@media only screen and (min-width:1400px) {
-
-	.l-video-frame {
-		@include size(50% 100%);
-		@include position(fixed, 0 null 0 0);
-	}
-
-	.main-content {
-
-		md-content {
-			width: 50%;
-			float: right;
-			padding-top: 64px;
-		}
-	}
-}
-
-
 .list-item {
 	&:nth-child(even) {
 		background-color: #f5f5f5;
-	}
-
-	.question {
-		margin: 1em 0;
 	}
 }
 
@@ -95,9 +63,10 @@ md-toolbar {
 
 	.question {
 		font-weight: bold;
-		font-size: 1.2em;
+		//font-size: 1em;
 		width: 100%;
 		text-align: left;
+		margin: 1em 0 0 0;
 	}
 
 	.q-footer {
@@ -110,5 +79,53 @@ md-toolbar {
 		}
 
 		.platform { color: gray; font-weight: 100; }
+	}
+}
+
+.no-questions { padding: 1em; text-align: center; font-size: 24px; line-height: 1.2; font-weight: 400; color: rgba(0,0,0,0.2); }
+
+.share-link {
+	font-size: 14px;
+	margin-right: 1em;
+	display: inline-block;
+
+}
+
+md-list md-list-item button.md-button:not([disabled]):hover { background: inherit; }
+
+@media only screen and (min-width:600px) {
+
+	.l-video-frame {
+		height: 464px;
+	}
+
+	.main-content md-content { padding-top: 464px; }
+}
+
+@media only screen and (min-width:1024px) {
+
+	.l-video-frame {
+		height: 564px;
+	}
+
+	.main-content md-content { padding-top: 564px; }
+}
+
+@media only screen and (min-width:1400px) {
+
+	.l-video-frame {
+		@include size(50% 100%);
+		@include position(fixed, 0 null 0 0);
+
+		padding: 64px 0;
+	}
+
+	.main-content {
+
+		md-content {
+			width: 50%;
+			float: right;
+			padding-top: 64px;
+		}
 	}
 }
