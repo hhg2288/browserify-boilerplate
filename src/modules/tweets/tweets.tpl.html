@@ -1,0 +1,33 @@
+<div class="main-wrapper">
+	<md-toolbar class="topbar">
+		<div class="md-toolbar-tools">
+			<h2>
+				<span>#askGaryVee Questions</span>
+			</h2>
+			<span flex></span>
+			<input type="search" placeholder="filter" ng-model="inputFilter"/>
+		</div>
+	</md-toolbar>
+	<div class="main-content">
+		<md-content>
+			<div class="l-list-container">
+				<md-list>
+					<md-list-item ng-click="home.changeVideo(item)" class="list-item" ng-repeat="item in items = (tweets.data | filter:inputFilter | orderBy: '-id_str')" layout="column">
+						<p class="question">{{ item.question }}</p>
+						<div class="q-footer" layout="row"></div>
+					</md-list-item>
+					<div class="no-questions" ng-if="!items.length">NO HAY NADA!</div>
+				</md-list>
+			</div>
+		</md-content>
+	</div>
+	<md-toolbar class="footer">
+		<div class="md-toolbar-tools">
+			<p class="md-body-1">
+				made by: <a href="http://hherrerag.com">Horacio Herrera</a> - <a href="https://twitter.com/hhg2288">@hhg2288</a>
+			</p>
+			<span flex></span>
+			<a href="https://twitter.com/intent/tweet?">tweet</a>
+		</div>
+	</md-toolbar>
+</div>
