@@ -68,7 +68,7 @@ function getTweets() {
 		console.log("RESULTS!!!! = ", results);
 		if (results.length > 0) {
 			var lastTweet = results[0].get("id_str");
-			urlLink = urlLink + "&max_id=" + lastTweet;
+			urlLink = urlLink + "&since_id=" + lastTweet;
 		}
 
 		var consumerSecret = "Ei2C3mCkWGccG9i4aPxsoNFwVtXHD78mOD0SkwMSfzUWQjyknf";
