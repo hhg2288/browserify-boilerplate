@@ -8,13 +8,13 @@
 			<input flex type="search" placeholder="filter" ng-model="inputFilter"/>
 		</div>
 	</md-toolbar>
-	<div class="main-content">
+	<div class="main-content home">
 		<div class="l-video-frame">
 			<youtube-video video-url="home.videoUrl" player="home.videoPlayer" player-vars="home.playerVars"></youtube-video>
 		</div>
 		<md-content>
 			<div class="l-list-container">
-				<md-list ng-show="home.showList">
+				<md-list>
 					<md-list-item ng-click="home.changeVideo(item)" class="list-item" ng-repeat="item in items = (home.questions | filter:inputFilter | orderBy: '-episode')" layout="column">
 						<p class="question">{{ item.question }}</p>
 						<div class="q-footer" layout="row">
@@ -25,6 +25,7 @@
 						</div>
 					</md-list-item>
 					<div class="no-questions" ng-if="!items.length">nothing here...</div>
+					<button type="button" class="md-primary" ng-click="home.loadMore()" ng-if="home.showLoadMore">LOAD MORE</button>
 				</md-list>
 			</div>
 		</md-content>

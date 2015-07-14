@@ -34,18 +34,69 @@ require('../common/api');
 		});
 	}
 
-	function TweetsCtrl(Api) {
-		
+	function TweetsCtrl(Api, $filter) {
+
 		var self = this;
 		self.data = [];
 
-		Api.getTweets().then(function(resp){
-			console.log(resp.models.length);
-			resp.models.forEach(function(el){
-				self.data.push(el.attributes);
-			});
+		self.showLoadMore = true;
+		self.label = "LOAD MORE";
 
+		self.page = 0;
+		self.pagesCount = 0;
+		self.perpage = 50;
+
+		self.loadMore = function() {
+			self.label = "loading...";
+			self.page++;
+			fetch();
+		};
+
+		self.delete = function(obj) {
+			var idx = self.data.indexOf(obj);
+			self.data.splice(idx, 1);
+			console.log(self.data.length);
+
+			obj.destroy({
+				success: function(dobj) {
+					// The object was deleted from the Parse Cloud.
+					console.log('delete success');
+				},
+				error: function(myObject, error) {
+					// The delete failed.
+					// error is a Parse.Error with an error code and message.
+				}
+			});
+		};
+
+		Api.fetchTweetsCount().then(function(count){
+			self.count = count;
+			console.log(count);
+			self.pagesCount = Math.ceil(count / self.perpage);
+			if (self.perpage > count) {
+				self.showLoadMore = false;
+			}
+			fetch();
 		});
+
+		function fetch() {
+			if (self.page > self.pagesCount) {
+				self.showLoadMore = false;
+			} else {
+				return Api.getTweets(self.page, self.perpage).then(function(resp) {
+					self.label = "LOAD MORE";
+
+					resp.forEach(function(el){
+						self.data.push(el);
+					});
+					console.log(self.data.length);
+				});
+			}
+		}
+
+
+
+
 	}
 
 })()
