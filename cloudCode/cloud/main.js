@@ -132,6 +132,8 @@ function getTweets() {
 					tweet.set("created_at", content.created_at );
 					tweet.set("id_str", content.id_str);
 					tweet.set("platform", "twitter");
+					tweet.set("author", content.user.screen_name);
+					tweet.set("author_name", content.user.name);
 
 					tweets.push(tweet);
 
