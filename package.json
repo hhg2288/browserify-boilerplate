@@ -1,8 +1,8 @@
 {
   "name": "ag",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "#AskGaryVee App",
-  "main": "index.js",
+  "main": "server.js",
 	"engines": {
 		"node": "0.10.33",
 		"npm": "2.1.x"
@@ -13,9 +13,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "me@hherrerag.com",
+  "author": "<Horacio Herrera> me@hherrerag.com",
   "devDependencies": {
-
+    "http-browserify": "^1.7.0",
+		"watchify": "^3.1.2",
+		"gulp-livereload": "^3.8.0"
   },
   "dependencies": {
     "angular": "^1.4.2",
@@ -27,17 +29,14 @@
     "gulp": "^3.8.11",
     "compression": "^1.4.3",
     "express": "^4.12.3",
-    "http-browserify": "^1.7.0",
     "morgan": "^1.5.2",
 		"browserify": "^9.0.8",
 		"del": "^1.1.1",
-		"gulp-livereload": "^3.8.0",
 		"gulp-sass": "^2.0.3",
 		"gulp-sourcemaps": "^1.5.2",
 		"gulp-util": "^3.0.4",
 		"lodash.assign": "^3.1.0",
 		"vinyl-buffer": "^1.0.0",
-		"vinyl-source-stream": "^1.1.0",
-		"watchify": "^3.1.2"
+		"vinyl-source-stream": "^1.1.0"
   }
 }
