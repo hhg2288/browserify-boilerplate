@@ -6,6 +6,7 @@ require('./modules/common/api');
 require('./modules/home/home');
 
 
+
 (function(){
 'use strict';
 
@@ -25,7 +26,7 @@ angular.module('ag', [
   $urlRouterProvider.otherwise("/");
 
 	$mdThemingProvider.theme('default')
-		.primaryPalette('blue-grey');
+		.primaryPalette('deep-orange');
 
 });
 

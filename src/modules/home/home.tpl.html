@@ -8,13 +8,13 @@
 			<input flex type="search" placeholder="filter" ng-model="inputFilter"/>
 		</div>
 	</md-toolbar>
-	<div class="main-content">
+	<div class="main-content home">
 		<div class="l-video-frame">
 			<youtube-video video-url="home.videoUrl" player="home.videoPlayer" player-vars="home.playerVars"></youtube-video>
 		</div>
 		<md-content>
 			<div class="l-list-container">
-				<md-list ng-show="home.showList">
+				<md-list>
 					<md-list-item ng-click="home.changeVideo(item)" class="list-item" ng-repeat="item in items = (home.questions | filter:inputFilter | orderBy: '-episode')" layout="column">
 						<p class="question">{{ item.question }}</p>
 						<div class="q-footer" layout="row">
@@ -25,6 +25,7 @@
 						</div>
 					</md-list-item>
 					<div class="no-questions" ng-if="!items.length">nothing here...</div>
+					<button type="button" class="md-primary" ng-click="home.loadMore()" ng-if="home.showLoadMore">LOAD MORE</button>
 				</md-list>
 			</div>
 		</md-content>
@@ -35,7 +36,8 @@
 				made by: <a href="http://hherrerag.com" target="_blank">Horacio Herrera</a> - <a href="https://twitter.com/hhg2288" target="_blank">@hhg2288</a>
 			</p>
 			<span flex></span>
-			<a href="https://twitter.com/intent/tweet?">tweet</a>
+			<a class="share-link tweet" href="https://twitter.com/intent/tweet?url=http%3a%2f%2faskgaryvee.herokuapp.com&text=Check+this+out!%2c+all+the+%23askGaryVee+questions+in+one+place.+made+by+%40hhg2288+with+love!+PLZ+RT.+cc+%40garyvee">share on twitter</a>
+			<a class="share-link fb" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2faskgaryvee.herokuapp.com">share on Facebook</a>
 		</div>
 	</md-toolbar>
 </div>
