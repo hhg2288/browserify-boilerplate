@@ -39,28 +39,52 @@ require('../../../bower_components/angular-youtube-mb/src/angular-youtube-embed'
 	function HomeCtrl(Api) {
 		
 		var self = this;
-		self.showList = false;
 		self.questions = [];
 		self.videoUrl = "http://www.youtube.com/watch?v=DKXoyMTTu3I";
 
-		Api.getAll().then(function(resp){
-			self.showList = true;
-			resp.models.forEach(function(el){
-				self.questions.push(el.attributes);
-			});
+		self.showList = true;
+		self.showLoadMore = false;
 
-		});
+		self.page = 0;
+		self.pagesCount = 0;
+		self.perpage = 50;
 
-		self.changeVideo = function(q) {
-			self.videoPlayer.loadVideoById(q.videoId, q.timestamp, "hires");
-		};
-
-		this.playerVars = {
+		self.playerVars = {
 			controls: 1,
 			autoplay: 1,
 			playsinline: 1
 		};
 
+		self.loadMore = function() {
+			self.page++;
+			fetch();
+		};
+
+		self.changeVideo = function(q) {
+			self.videoPlayer.loadVideoById(q.videoId, q.timestamp, "hires");
+		};
+
+		Api.fetchQuestionsCount().then(function(count){
+			self.count = count;
+			self.pagesCount = Math.ceil(count / self.perpage);
+			if (self.perpage < count) {
+				self.showLoadMore = true;
+			}
+			fetch();
+		});
+
+		function fetch() {
+			if (self.page > self.pagesCount) {
+				//self.showLoadMore = false;
+				return;
+			} else {
+				return Api.getQuestions(self.page, self.perpage).then(function(resp) {
+					resp.forEach(function(el){
+						self.questions.push(el.attributes);
+					});
+				});
+			}
+		}
 	}
 
 })()

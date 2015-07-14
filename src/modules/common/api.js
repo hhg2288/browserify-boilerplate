@@ -16,38 +16,58 @@ angular.module('common.api', [])
 		className: "Tweet"
 	}),
 
-	_getAll = function() {
+	_getQuestions = function(p,pp) {
 		var q = $q.defer(),
 		qs = new Questions;
 
 		qs.query = new Parse.Query(Question);
 
-		qs.fetch().then(function(response){
+		qs.query.limit(pp).skip(p*pp);
+
+		qs.query.find().then(function(response){
 			q.resolve(response);
 		}, function(error){
 			q.reject(error);
 		});
 		return q.promise;
 	},
-	_getTweets = function() {
+
+	_getTweets = function(p, pp) {
 		var q = $q.defer(),
 		tw = new Tweets;
 
 		tw.query = new Parse.Query(Tweet);
-		tw.fetch().then(function(response){
+		tw.query.descending("id_str");
+		tw.query.limit(pp).skip(p*pp);
+
+
+		tw.query.find().then(function(response){
 			q.resolve(response);
 		}, function(error){
-			//console.error('getAllError, ' + error);
+
 			q.reject(error);
 		});
 		return q.promise;
+	},
 
+	_fetchQuestionsCount = function() {
+		var qs = new Questions;
+		qs.query = new Parse.Query(Question);
+		return qs.query.count();
+	},
+
+	_fetchTweetsCount = function() {
+		var tw = new Tweets;
+		tw.query = new Parse.Query(Tweet);
+		return tw.query.count();
 	}
 	;
 
 	return {
-		getAll: _getAll,
-		getTweets: _getTweets
+		getQuestions: _getQuestions,
+		getTweets: _getTweets,
+		fetchQuestionsCount: _fetchQuestionsCount,
+		fetchTweetsCount: _fetchTweetsCount
 	};
 
 
