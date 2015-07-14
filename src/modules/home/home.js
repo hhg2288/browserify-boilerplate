@@ -36,14 +36,15 @@ require('../../../bower_components/angular-youtube-mb/src/angular-youtube-embed'
 		});
 	}
 
-	function HomeCtrl(Api, youtubeEmbedUtils) {
+	function HomeCtrl(Api) {
 		
 		var self = this;
+		self.showList = false;
 		self.questions = [];
 		self.videoUrl = "http://www.youtube.com/watch?v=DKXoyMTTu3I";
 
 		Api.getAll().then(function(resp){
-
+			self.showList = true;
 			resp.models.forEach(function(el){
 				self.questions.push(el.attributes);
 			});
