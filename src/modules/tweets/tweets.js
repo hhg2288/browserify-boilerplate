@@ -69,6 +69,21 @@ require('../common/api');
 			});
 		};
 
+		self.select = function(item) {
+			self.selectedItem = item;
+		};
+
+		self.save = function(p){
+			Api.saveTweet(self.selectedItem, p).then(function(res){
+
+				res.save().then(function(){
+					console.log('SAVED!!!');
+				});
+			}, function(error){
+				//console.error(error);
+			});
+		};
+
 		Api.fetchTweetsCount().then(function(count){
 			self.count = count;
 			console.log(count);

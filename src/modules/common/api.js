@@ -60,6 +60,21 @@ angular.module('common.api', [])
 		var tw = new Tweets;
 		tw.query = new Parse.Query(Tweet);
 		return tw.query.count();
+	},
+
+	_saveTweet = function(parseObj, data){
+		var q = $q.defer();
+
+		parseObj.save(data).then(function(res){
+			q.resolve(res);
+		}, function(error){
+			//console.error(error);
+			q.reject(error);
+		});
+
+		////
+
+		return q.promise;
 	}
 	;
 
@@ -67,7 +82,8 @@ angular.module('common.api', [])
 		getQuestions: _getQuestions,
 		getTweets: _getTweets,
 		fetchQuestionsCount: _fetchQuestionsCount,
-		fetchTweetsCount: _fetchTweetsCount
+		fetchTweetsCount: _fetchTweetsCount,
+		saveTweet: _saveTweet
 	};
 
 

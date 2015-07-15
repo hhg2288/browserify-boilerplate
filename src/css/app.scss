@@ -38,7 +38,18 @@
 	z-index: 11;
 }
 
+ .main-content.tweets .l-form-container {
+	md-content {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1em 2em;
+	}
+}
 
+md-input-container .md-input.input-question {
+	font-size: 2em;
+	line-height: 1.2;
+}
 
 
 .l-video-frame {
@@ -133,15 +144,16 @@ md-list md-list-item button.md-button:not([disabled]):hover { background: inheri
 
 	.l-video-frame, .l-form-container {
 		@include size(50% 100%);
+		padding: 64px 0;
 	}
 
 	.l-video-frame {
 		@include position(fixed, 0 null 0 0);
+
 	}
 
 	.l-form-container {
 		@include position(fixed, 0 0 0 null);
-		padding: 64px 0 0 0;
 	}
 
 	.main-content.home {
