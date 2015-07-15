@@ -12,18 +12,50 @@
 		<md-content>
 			<div class="l-list-container">
 				<md-list>
-					<md-list-item ng-click="home.changeVideo(item)" class="list-item" ng-repeat="item in items = (tweets.data | filter:inputFilter | orderBy: '-id_str')" layout="column">
+					<md-list-item ng-click="tweets.select(item)" class="list-item" ng-repeat="item in items = (tweets.data | filter:inputFilter | orderBy: '-id_str')" layout="column">
 						<p class="question">{{ item.attributes.question }}</p>
-						<div class="q-footer" layout="row">
-							<button ng-click="tweets.delete(item)">DELETE</button>
-						</div>
 					</md-list-item>
 					<div class="no-questions" ng-if="!items.length">nothing here...</div>
 					<button type="button" class="load-more" ng-click="tweets.loadMore()" ng-if="tweets.showLoadMore">{{ tweets.label }}</button>
 				</md-list>
 			</div>
 			<div class="l-form-container">
-				<h1>FORM CONTAINER</h1>
+				<md-content layout-padding>
+					<form name="TweetForm">
+						<md-input-container flex>
+							<label>Question</label>
+							<textarea class="input-question" ng-model="tweets.selectedItem.attributes.question" columns="1" disabled></textarea>
+						</md-input-container>
+						<div layout layout-sm="column">
+							<md-input-container>
+								<label>episode</label>
+								<input ng-model="tweets.selectedItem.attributes.episode" type="text">
+							</md-input-container>
+							<md-input-container flex>
+								<label>Video ID</label>
+								<input ng-model="tweets.selectedItem.attributes.videoId">
+							</md-input-container>
+						</div>
+						<div layout layout-sm="column">
+							<md-input-container flex>
+								<label>timestamp</label>
+								<input type="text" ng-model="tweets.selectedItem.attributes.timestamp">
+							</md-input-container>
+							<md-input-container flex>
+								<label>answered at</label>
+								<input ng-model="tweets.selectedItem.attributes.answeredAt" type="date">
+							</md-input-container>
+						</div>
+						<section layout="row" layout-sm="column" layout-align="center center">
+							<md-button class="md-raised" ng-click="tweets.save(tweets.selectedItem)">SAVE</md-button>
+							<md-button class="md-raised md-warn" ng-click="tweets.delete()">DELETE</md-button>
+						</section>
+					</form>
+				</md-content>
+
+
+
+
 			</div>
 		</md-content>
 	</div>

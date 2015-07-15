@@ -1,76 +1,21 @@
 var oauth = require("cloud/libs/oauth.js");
 
-Parse.Cloud.job("twitterFeed", function(request, status) {
-	Parse.Cloud.useMasterKey();
-
-
-	var promise = Parse.Promise.as();
-
-	promise = promise.then(function() {
-		return getTweets();
-	});
-
-	Parse.Promise.when(promise).then(function() {
-		status.success("tweets Saved!");
-	}, function(error) {
-		status.error("Tweets failed to update", error);
-	});
-
-});
-
-
-
-Parse.Cloud.job("removeDuplicateItems", function(request, status) {
-	Parse.Cloud.useMasterKey();
-	var _ = require("underscore");
-
-	var hashTable = {};
-
-	function hashKeyForTestItem(item) {
-		var fields = ["question", "id_str"];
-		var hashKey = "";
-		_.each(fields, function (field) {
-			hashKey += item.get(field) + "/" ;
-		});
-		return hashKey;
-	}
-
-	var testItemsQuery = new Parse.Query("Tweets");
-	testItemsQuery.each(function (item) {
-		var key = hashKeyForTestItem(item);
-
-		if (key in hashTable) { // this item was seen before, so destroy this
-			return item.destroy();
-		} else { // it is not in the hashTable, so keep it
-			hashTable[key] = 1;
-		}
-
-	}).then(function() {
-		status.success("Migration completed successfully.");
-	}, function(error) {
-		status.error("Uh oh, something went wrong.", error);
-	});
-});
-
-
-
-
 function getTweets() {
 	var promise = new Parse.Promise();
 	var Tweets = Parse.Object.extend("Tweets");
 	var query = new Parse.Query(Tweets);
 	var urlLink = "https://api.twitter.com/1.1/search/tweets.json?q=%23askGaryVee%20%3F&src=typd&vertical=default&count=100";
 
-	query.descending("id_str");
-	//query.ascending("id_str");
+	//query.descending("id_str");
+	query.ascending("id_str");
 	query.limit(1);
 
 	query.find().then(function(results) {
 		console.log("RESULTS!!!! = ", results);
 		if (results.length > 0) {
 			var lastTweet = results[0].get("id_str");
-			urlLink = urlLink + "&since_id=" + lastTweet;
-			//urlLink = urlLink + "&max_id=" + lastTweet;
+			//urlLink = urlLink + "&since_id=" + lastTweet;
+			urlLink = urlLink + "&max_id=" + lastTweet;
 		}
 
 		var consumerSecret = "Ei2C3mCkWGccG9i4aPxsoNFwVtXHD78mOD0SkwMSfzUWQjyknf";
@@ -132,6 +77,8 @@ function getTweets() {
 					tweet.set("created_at", content.created_at );
 					tweet.set("id_str", content.id_str);
 					tweet.set("platform", "twitter");
+					tweet.set("author", content.user.screen_name);
+					tweet.set("author_name", content.user.name);
 
 					tweets.push(tweet);
 
@@ -162,3 +109,56 @@ function getTweets() {
 	return promise;
 
 }
+
+
+Parse.Cloud.job("twitterFeed", function(request, status) {
+	Parse.Cloud.useMasterKey();
+
+
+	var promise = Parse.Promise.as();
+
+	promise = promise.then(function() {
+		return getTweets();
+	});
+
+	Parse.Promise.when(promise).then(function() {
+		status.success("tweets Saved!");
+	}, function(error) {
+		status.error("Tweets failed to update", error);
+	});
+
+});
+
+
+
+Parse.Cloud.job("removeDuplicateItems", function(request, status) {
+	Parse.Cloud.useMasterKey();
+	var _ = require("underscore");
+
+	var hashTable = {};
+
+	function hashKeyForTestItem(item) {
+		var fields = ["question", "id_str"];
+		var hashKey = "";
+		_.each(fields, function (field) {
+			hashKey += item.get(field) + "/" ;
+		});
+		return hashKey;
+	}
+
+	var testItemsQuery = new Parse.Query("Tweets");
+	testItemsQuery.each(function (item) {
+		var key = hashKeyForTestItem(item);
+
+		if (key in hashTable) { // this item was seen before, so destroy this
+			return item.destroy();
+		} else { // it is not in the hashTable, so keep it
+			hashTable[key] = 1;
+		}
+
+	}).then(function() {
+		status.success("Migration completed successfully.");
+	}, function(error) {
+		status.error("Uh oh, something went wrong.", error);
+	});
+});
