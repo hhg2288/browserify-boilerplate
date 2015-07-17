@@ -1,21 +1,64 @@
 var oauth = require("cloud/libs/oauth.js");
 
+Parse.Cloud.job("tweet2Question", function(request, status) {
+	Parse.Cloud.useMasterKey();
+
+	var Questions = Parse.Object.extend("Questions");
+	var Tweet = Parse.Object.extend("Tweets");
+	var query = new Parse.Query(Tweet);
+
+	query.exists("episode");
+
+	query.find().then(function(results){
+		if (results.length > 0) {
+			var questions = new Array();
+			for (var i = 0; i < results.length; i++) {
+				var question = new Questions();
+
+				var content = results[i];
+				question.set('question', content.get('question'));
+				question.set('episode', content.get('episode'));
+				question.set('platform', content.get('platform'));
+				question.set('timestamp', content.get('timestamp'));
+				question.set('videoId', content.get('videoId'));
+
+				questions.push(question);
+			}
+
+			Parse.Object.saveAll(questions, {
+				success: function (objs) {
+					console.log('QUESTIONS SAVED!!!');
+				},
+				error: function (error) {
+					console.log(error);
+				}
+			});
+		}
+	}, function(error){
+		console.error(error);
+	});
+});
+
+
+
+
+
 function getTweets() {
 	var promise = new Parse.Promise();
 	var Tweets = Parse.Object.extend("Tweets");
 	var query = new Parse.Query(Tweets);
 	var urlLink = "https://api.twitter.com/1.1/search/tweets.json?q=%23askGaryVee%20%3F&src=typd&vertical=default&count=100";
 
-	//query.descending("id_str");
-	query.ascending("id_str");
+	query.descending("id_str");
+	//query.ascending("id_str");
 	query.limit(1);
 
 	query.find().then(function(results) {
 		console.log("RESULTS!!!! = ", results);
 		if (results.length > 0) {
 			var lastTweet = results[0].get("id_str");
-			//urlLink = urlLink + "&since_id=" + lastTweet;
-			urlLink = urlLink + "&max_id=" + lastTweet;
+			urlLink = urlLink + "&since_id=" + lastTweet;
+			//urlLink = urlLink + "&max_id=" + lastTweet;
 		}
 
 		var consumerSecret = "Ei2C3mCkWGccG9i4aPxsoNFwVtXHD78mOD0SkwMSfzUWQjyknf";

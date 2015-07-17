@@ -5,7 +5,10 @@
 				<span>#askGaryVee tweets</span>
 			</h2>
 			<span flex></span>
-			<input type="search" placeholder="filter" ng-model="inputFilter"/>
+
+			<form name="searchTweet" ng-submit="tweets.search()">
+				<input type="search" placeholder="filter" ng-model="tweets.qFragment"/>
+				<md-button type="submit">SEARCH</md-button>
 		</div>
 	</md-toolbar>
 	<div class="main-content tweets">
@@ -39,7 +42,7 @@
 						<div layout layout-sm="column">
 							<md-input-container flex>
 								<label>timestamp</label>
-								<input type="text" ng-model="tweets.selectedItem.attributes.timestamp">
+								<input type="number" ng-model="tweets.selectedItem.attributes.timestamp">
 							</md-input-container>
 							<md-input-container flex>
 								<label>answered at</label>

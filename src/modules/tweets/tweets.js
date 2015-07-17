@@ -52,6 +52,18 @@ require('../common/api');
 			fetch();
 		};
 
+		self.search = function() {
+			if (!self.qFragment) {
+
+			} else {
+				Api.searchTweetBySubstring(self.qFragment).then(function (resp) {
+					self.data = resp;
+				}, function (error) {
+					console.error(error);
+				});
+			}
+		};
+
 		self.delete = function(obj) {
 			var idx = self.data.indexOf(obj);
 			self.data.splice(idx, 1);

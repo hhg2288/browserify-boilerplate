@@ -75,6 +75,23 @@ angular.module('common.api', [])
 		////
 
 		return q.promise;
+	},
+
+	_searchTweetBySubstring = function(substr) {
+		var q = $q.defer(),
+		tw = new Tweets;
+		console.log(substr);
+		tw.query = new Parse.Query(Tweet);
+		tw.query.contains('question', substr);
+
+		tw.query.find().then(function(response){
+			q.resolve(response);
+		}, function(error){
+
+			q.reject(error);
+		});
+		return q.promise;
+
 	}
 	;
 
@@ -83,7 +100,8 @@ angular.module('common.api', [])
 		getTweets: _getTweets,
 		fetchQuestionsCount: _fetchQuestionsCount,
 		fetchTweetsCount: _fetchTweetsCount,
-		saveTweet: _saveTweet
+		saveTweet: _saveTweet,
+		searchTweetBySubstring: _searchTweetBySubstring
 	};
 
 
