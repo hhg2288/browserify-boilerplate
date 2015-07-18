@@ -30,11 +30,16 @@ require('../common/api');
 			url: "/tweets",
 			templateUrl: "modules/tweets/tweets.tpl.html",
 			controller: "TweetsCtrl",
-			controllerAs: 'tweets'
+			controllerAs: 'tweets',
+			resolve: {
+				Current: function() {
+					return Parse.User.current();
+				}
+			}
 		});
 	}
 
-	function TweetsCtrl(Api, $filter) {
+	function TweetsCtrl(Api, Current, $state) {
 
 		var self = this;
 		self.data = [];
@@ -52,6 +57,29 @@ require('../common/api');
 			fetch();
 		};
 
+
+		self.init = function() {
+
+			Api.fetchTweetsCount().then(function (count) {
+				self.count = count;
+				//console.log(count);
+				self.pagesCount = Math.ceil(count / self.perpage);
+				if (self.perpage > count) {
+					self.showLoadMore = false;
+				}
+				fetch();
+			});
+
+		};
+
+		if (Current) {
+			self.init();
+		} else {
+			$state.go('home');
+		}
+
+
+
 		self.search = function() {
 			if (!self.qFragment) {
 
@@ -67,12 +95,12 @@ require('../common/api');
 		self.delete = function(obj) {
 			var idx = self.data.indexOf(obj);
 			self.data.splice(idx, 1);
-			console.log(self.data.length);
+			//console.log(self.data.length);
 
 			obj.destroy({
 				success: function(dobj) {
 					// The object was deleted from the Parse Cloud.
-					console.log('delete success');
+					//console.log('delete success');
 				},
 				error: function(myObject, error) {
 					// The delete failed.
@@ -89,22 +117,12 @@ require('../common/api');
 			Api.saveTweet(self.selectedItem, p).then(function(res){
 
 				res.save().then(function(){
-					console.log('SAVED!!!');
+					//console.log('SAVED!!!');
 				});
 			}, function(error){
 				//console.error(error);
 			});
 		};
-
-		Api.fetchTweetsCount().then(function(count){
-			self.count = count;
-			console.log(count);
-			self.pagesCount = Math.ceil(count / self.perpage);
-			if (self.perpage > count) {
-				self.showLoadMore = false;
-			}
-			fetch();
-		});
 
 		function fetch() {
 			if (self.page > self.pagesCount) {
@@ -116,7 +134,7 @@ require('../common/api');
 					resp.forEach(function(el){
 						self.data.push(el);
 					});
-					console.log(self.data.length);
+					//console.log(self.data.length);
 				});
 			}
 		}

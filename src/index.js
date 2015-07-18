@@ -5,6 +5,7 @@ require('../bower_components/angular-youtube-mb/src/angular-youtube-embed');
 require('./modules/common/api');
 require('./modules/home/home');
 require('./modules/tweets/tweets');
+require('./modules/login/login');
 
 (function(){
 'use strict';
@@ -15,6 +16,7 @@ angular.module('ag', [
 	'youtube-embed',
 	'ta.home',
 	'ta.tweets',
+	'ta.login',
 	'common.api'
 ])
 .config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {

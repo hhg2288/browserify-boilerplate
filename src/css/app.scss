@@ -122,6 +122,19 @@ a.md-button:not([disabled]):hover, .md-button:not([disabled]):hover
 
 md-list md-list-item button.md-button:not([disabled]):hover { background: inherit; }
 
+.main-content.tweets {
+
+	.l-list-container, .l-form-container {
+		width: 50%;
+		float: left;
+		padding-top: 64px;
+	}
+}
+
+.l-form-container {
+	@include position(fixed, 0 0 0 null);
+}
+
 @media only screen and (min-width:600px) {
 
 	.l-video-frame {
@@ -152,24 +165,11 @@ md-list md-list-item button.md-button:not([disabled]):hover { background: inheri
 
 	}
 
-	.l-form-container {
-		@include position(fixed, 0 0 0 null);
-	}
-
 	.main-content.home {
 
 		md-content {
 			width: 50%;
 			float: right;
-			padding-top: 64px;
-		}
-	}
-
-	.main-content.tweets {
-
-		md-content {
-			width: 50%;
-			float: left;
 			padding-top: 64px;
 		}
 	}

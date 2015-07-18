@@ -49,7 +49,23 @@
 								<input ng-model="tweets.selectedItem.attributes.answeredAt" type="date">
 							</md-input-container>
 						</div>
+						<div layout layout-sm="column">
+							<md-input-container flex>
+								<label>author</label>
+								<input ng-model="tweets.selectedItem.attributes.author" type="text" disabled>
+							</md-input-container>
+							<md-input-container flex>
+								<label>tweet ID</label>
+								<input ng-model="tweets.selectedItem.attributes.id_str" type="text" disabled>
+							</md-input-container>
+						</div>
 						<section layout="row" layout-sm="column" layout-align="center center">
+							<md-button
+									class="md-raised"
+									ng-href="https://twitter.com/{{tweets.selectedItem.attributes.author}}/status/{{tweets.selectedItem.attributes.id_str}}"
+									target="_blank"
+									ng-disabled="!tweets.selectedItem"
+							>GO TO TWEET</md-button>
 							<md-button class="md-raised" ng-click="tweets.save(tweets.selectedItem)">SAVE</md-button>
 							<md-button class="md-raised md-warn" ng-click="tweets.delete()">DELETE</md-button>
 						</section>
