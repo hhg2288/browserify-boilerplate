@@ -14,8 +14,15 @@
 	<div class="main-content tweets">
 		<md-content>
 			<div class="l-list-container">
-				<md-list>
-					<md-list-item ng-click="tweets.select(item)" class="list-item" ng-repeat="item in items = (tweets.data | filter:inputFilter | orderBy: '-id_str')" layout="column">
+				<div class="loading" ng-if="!tweets.showList">
+					<img src="css/spinner.png" alt="loading image"/>
+				</div>
+				<md-list ng-if="tweets.showList">
+					<md-list-item
+							ng-click="tweets.select(item)"
+							class="list-item"
+							ng-class="{selected: item.id === tweets.selectedItem.id}"
+							ng-repeat="item in items = (tweets.data | filter:inputFilter | orderBy: '-id_str')" layout="column">
 						<p class="question">{{ item.attributes.question }}</p>
 					</md-list-item>
 					<div class="no-questions" ng-if="!items.length">nothing here...</div>
@@ -27,47 +34,42 @@
 					<form name="TweetForm">
 						<md-input-container flex>
 							<label>Question</label>
-							<textarea class="input-question" ng-model="tweets.selectedItem.attributes.question" columns="1" disabled></textarea>
+							<textarea required class="input-question" ng-model="tweets.selectedItem.attributes.question" columns="1" disabled></textarea>
 						</md-input-container>
 						<div layout layout-sm="column">
 							<md-input-container>
 								<label>episode</label>
-								<input ng-model="tweets.selectedItem.attributes.episode" type="text">
+								<input required ng-model="tweets.selectedItem.attributes.episode" type="text">
 							</md-input-container>
 							<md-input-container flex>
 								<label>Video ID</label>
-								<input ng-model="tweets.selectedItem.attributes.videoId">
+								<input required ng-model="tweets.selectedItem.attributes.videoId">
 							</md-input-container>
-						</div>
-						<div layout layout-sm="column">
 							<md-input-container flex>
 								<label>timestamp</label>
-								<input type="number" ng-model="tweets.selectedItem.attributes.timestamp">
-							</md-input-container>
-							<md-input-container flex>
-								<label>answered at</label>
-								<input ng-model="tweets.selectedItem.attributes.answeredAt" type="date">
+								<input required type="number" ng-model="tweets.selectedItem.attributes.timestamp">
 							</md-input-container>
 						</div>
 						<div layout layout-sm="column">
 							<md-input-container flex>
 								<label>author</label>
-								<input ng-model="tweets.selectedItem.attributes.author" type="text" disabled>
+								<input required ng-model="tweets.selectedItem.attributes.author" type="text" disabled>
 							</md-input-container>
 							<md-input-container flex>
 								<label>tweet ID</label>
-								<input ng-model="tweets.selectedItem.attributes.id_str" type="text" disabled>
+								<input required ng-model="tweets.selectedItem.attributes.id_str" type="text" disabled>
 							</md-input-container>
 						</div>
 						<section layout="row" layout-sm="column" layout-align="center center">
+							<md-button class="md-raised" type="submit" ng-click="tweets.save(tweets.selectedItem)">SAVE</md-button>
+							<md-button class="md-raised md-warn" type="button" ng-click="tweets.delete(tweets.selectedItem)">DELETE</md-button>
 							<md-button
+									type="button"
 									class="md-raised"
 									ng-href="https://twitter.com/{{tweets.selectedItem.attributes.author}}/status/{{tweets.selectedItem.attributes.id_str}}"
 									target="_blank"
 									ng-disabled="!tweets.selectedItem"
-							>GO TO TWEET</md-button>
-							<md-button class="md-raised" ng-click="tweets.save(tweets.selectedItem)">SAVE</md-button>
-							<md-button class="md-raised md-warn" ng-click="tweets.delete()">DELETE</md-button>
+									>GO TO TWEET</md-button>
 						</section>
 					</form>
 				</md-content>

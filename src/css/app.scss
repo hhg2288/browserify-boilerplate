@@ -5,6 +5,8 @@
 	display: none;
 }
 
+md-list { padding: 0; }
+
 
 .main-wrapper {
 	@include size(100%);
@@ -66,10 +68,14 @@ md-input-container .md-input.input-question {
 }
 
 .list-item {
-	&:nth-child(even) {
-		background-color: #f5f5f5;
+	border-bottom: 1px solid #D6D6D6;
+
+	&.selected {
+		background-color: lightgray;
 	}
 }
+
+md-list md-list-item button.md-button:not([disabled]):hover { background-color: transparent; }
 
 
 .md-list-item-inner {
@@ -81,16 +87,18 @@ md-input-container .md-input.input-question {
 		//font-size: 1em;
 		width: 100%;
 		text-align: left;
-		margin: 1em 0 0 0;
+		margin: 1em 0;
 	}
 
 	.q-footer {
 
 		width: 100%;
 		text-align: left;
+		margin-bottom: 1.5em;
 
 		p {
-			margin: 0 0 1em 0;
+			margin: 0;
+			line-height: 1;
 		}
 
 		.platform { color: gray; font-weight: 100; }
@@ -173,4 +181,21 @@ md-list md-list-item button.md-button:not([disabled]):hover { background: inheri
 			padding-top: 64px;
 		}
 	}
+}
+
+
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+.loading {
+	padding: 1em;
+	width: 100%;
+	text-align: center;
+}
+.loading img {
+	animation: spin 1s infinite linear;
+	@include size(40px);
+	opacity: 0.7;
 }

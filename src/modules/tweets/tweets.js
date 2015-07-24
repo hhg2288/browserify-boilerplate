@@ -46,6 +46,8 @@ require('../common/api');
 
 		self.showLoadMore = true;
 		self.label = "LOAD MORE";
+		self.selectedItem = null;
+		self.showList = false;
 
 		self.page = 0;
 		self.pagesCount = 0;
@@ -113,15 +115,59 @@ require('../common/api');
 			self.selectedItem = item;
 		};
 
-		self.save = function(p){
-			Api.saveTweet(self.selectedItem, p).then(function(res){
+		self.save = function(obj){
+			var idx = self.data.indexOf(obj);
+			self.data.splice(idx, 1);
 
-				res.save().then(function(){
-					//console.log('SAVED!!!');
-				});
-			}, function(error){
-				//console.error(error);
+			var Tweet = Parse.Object.extend("Tweets");
+			var tw = new Tweet();
+			tw.id = obj.id;
+
+			tw.set('episode', obj.get('episode'));
+			tw.set('platform', 'twitter');
+			tw.set('timestamp', obj.get('timestamp'));
+			tw.set('videoId', obj.get('videoId'));
+			tw.set('id_str', obj.get('id_str'));
+			tw.set('author', obj.get('author'));
+			tw.set('question', obj.get('question'));
+
+// Save
+			tw.save(null, {
+				success: function(obj) {
+					// Saved successfully.
+					console.log(obj);
+
+					var Question = Parse.Object.extend('Questions');
+					var qw = new Question();
+
+					qw.set('episode', obj.get('episode'));
+					qw.set('platform', 'twitter');
+					qw.set('timestamp', obj.get('timestamp'));
+					qw.set('videoId', obj.get('videoId'));
+					qw.set('id_str', obj.get('id_str'));
+					qw.set('author', obj.get('author'));
+					qw.set('question', obj.get('question'));
+
+					qw.save(null, {
+						success: function(){
+							console.log('QUESTION SAVED!!!');
+							//tw.destroy();
+						},
+						error: function(err){
+							console.error(error);
+						}
+					})
+				},
+				error: function(res, error) {
+					// The save failed.
+					// error is a Parse.Error with an error code and description.
+					console.error("error", error);
+				}
 			});
+		};
+
+		self.addToQuestions = function(item) {
+
 		};
 
 		function fetch() {
@@ -130,7 +176,7 @@ require('../common/api');
 			} else {
 				return Api.getTweets(self.page, self.perpage).then(function(resp) {
 					self.label = "LOAD MORE";
-
+					self.showList = true;
 					resp.forEach(function(el){
 						self.data.push(el);
 					});

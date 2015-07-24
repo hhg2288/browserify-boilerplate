@@ -8,6 +8,9 @@ Parse.Cloud.job("tweet2Question", function(request, status) {
 	var query = new Parse.Query(Tweet);
 
 	query.exists("episode");
+	query.exists("timestamp");
+	query.exists("videoId");
+	query.exists("author");
 
 	query.find().then(function(results){
 		if (results.length > 0) {
@@ -21,6 +24,8 @@ Parse.Cloud.job("tweet2Question", function(request, status) {
 				question.set('platform', content.get('platform'));
 				question.set('timestamp', content.get('timestamp'));
 				question.set('videoId', content.get('videoId'));
+				question.set('id_str', content.get('id_str'));
+				question.set('author', content.get('author'));
 
 				questions.push(question);
 			}
@@ -47,18 +52,22 @@ function getTweets() {
 	var promise = new Parse.Promise();
 	var Tweets = Parse.Object.extend("Tweets");
 	var query = new Parse.Query(Tweets);
-	var urlLink = "https://api.twitter.com/1.1/search/tweets.json?q=%23askGaryVee%20%3F&src=typd&vertical=default&count=100";
+	var urlLink = "https://api.twitter.com/1.1/search/tweets.json?q=%23askgaryvee%20%3F&src=typd";
 
 	query.descending("id_str");
 	//query.ascending("id_str");
 	query.limit(1);
 
 	query.find().then(function(results) {
-		console.log("RESULTS!!!! = ", results);
+		console.log("RESULTS!!!!");
+		console.log(results);
 		if (results.length > 0) {
 			var lastTweet = results[0].get("id_str");
+			console.log(lastTweet);
 			urlLink = urlLink + "&since_id=" + lastTweet;
 			//urlLink = urlLink + "&max_id=" + lastTweet;
+		} else {
+			console.log("NO RESULTS :(");
 		}
 
 		var consumerSecret = "Ei2C3mCkWGccG9i4aPxsoNFwVtXHD78mOD0SkwMSfzUWQjyknf";

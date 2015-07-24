@@ -14,18 +14,28 @@
 		</div>
 		<md-content>
 			<div class="l-list-container">
-				<md-list>
-					<md-list-item ng-click="home.changeVideo(item)" class="list-item" ng-repeat="item in items = (home.questions | filter:inputFilter | orderBy: '-episode')" layout="column">
-						<p class="question">{{ item.question }}</p>
+				<div class="loading" ng-if="!home.showList">
+					<img src="css/spinner.png" alt="loading image"/>
+				</div>
+				<md-list ng-if="home.showList">
+					<md-list-item
+							ng-click="home.changeVideo(item)"
+							class="list-item"
+							ng-repeat="item in items = (home.questions | filter:inputFilter | orderBy: '-attributes.episode')"
+							layout="column"
+							ng-class="{selected: item.id === home.idSelectedItem}"
+							>
+						<p class="question">{{ item.attributes.question }}</p>
 						<div class="q-footer" layout="row">
 							<p>
-								<span class="episode">episode {{ item.episode }}</span>
-								<span class="platform"> - {{ item.platform }}</span>
+								<span class="episode">episode {{ item.attributes.episode }}</span>
+								<span class="author"> - {{ item.attributes.platform }}</span>
+								<span class="author"> - {{ item.attributes.author }}</span>
 							</p>
 						</div>
 					</md-list-item>
 					<div class="no-questions" ng-if="!items.length">nothing here...</div>
-					<button type="button" class="md-primary" ng-click="home.loadMore()" ng-if="home.showLoadMore">LOAD MORE</button>
+					<button type="button" class="load-more" ng-click="home.loadMore()" ng-if="home.showLoadMore">{{ home.label }}</button>
 				</md-list>
 			</div>
 		</md-content>

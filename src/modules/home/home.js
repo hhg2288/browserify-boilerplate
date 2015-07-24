@@ -32,7 +32,8 @@ require('../../../bower_components/angular-youtube-mb/src/angular-youtube-embed'
 			url: "/",
 			templateUrl: "modules/home/home.tpl.html",
 			controller: "HomeCtrl",
-			controllerAs: 'home'
+			controllerAs: 'home',
+			bindToController: true
 		});
 	}
 
@@ -42,8 +43,11 @@ require('../../../bower_components/angular-youtube-mb/src/angular-youtube-embed'
 		self.questions = [];
 		self.videoUrl = "http://www.youtube.com/watch?v=DKXoyMTTu3I";
 
-		self.showList = true;
-		self.showLoadMore = false;
+		self.showList = false;
+		self.idSelectedItem = null;
+
+		self.showLoadMore = true;
+		self.label = "LOAD MORE";
 
 		self.page = 0;
 		self.pagesCount = 0;
@@ -56,31 +60,35 @@ require('../../../bower_components/angular-youtube-mb/src/angular-youtube-embed'
 		};
 
 		self.loadMore = function() {
+			self.label = "loading...";
 			self.page++;
 			fetch();
 		};
 
 		self.changeVideo = function(q) {
-			self.videoPlayer.loadVideoById(q.videoId, q.timestamp, "hires");
+			self.idSelectedItem = q.id;
+			self.videoPlayer.loadVideoById(q.attributes.videoId, q.attributes.timestamp, "hires");
 		};
 
 		Api.fetchQuestionsCount().then(function(count){
 			self.count = count;
 			self.pagesCount = Math.ceil(count / self.perpage);
-			if (self.perpage < count) {
-				self.showLoadMore = true;
+			if (self.perpage >= count) {
+				self.showLoadMore = false;
 			}
 			fetch();
 		});
 
 		function fetch() {
-			if (self.page > self.pagesCount) {
-				//self.showLoadMore = false;
-				return;
+			if (self.page >= self.pagesCount) {
+				self.showLoadMore = false;
 			} else {
 				return Api.getQuestions(self.page, self.perpage).then(function(resp) {
+					self.label = "LOAD MORE";
+					self.showList = true;
+					console.log(resp);
 					resp.forEach(function(el){
-						self.questions.push(el.attributes);
+						self.questions.push(el);
 					});
 				});
 			}
