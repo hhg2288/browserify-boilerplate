@@ -22,6 +22,7 @@ angular.module('common.api', [])
 
 		qs.query = new Parse.Query(Question);
 
+		qs.query.descending('episode');
 		qs.query.limit(pp).skip(p*pp);
 
 		qs.query.find().then(function(response){
