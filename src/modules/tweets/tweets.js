@@ -135,7 +135,7 @@ require('../common/api');
 			tw.save(null, {
 				success: function(obj) {
 					// Saved successfully.
-					console.log(obj);
+					//console.log(obj);
 
 					var Question = Parse.Object.extend('Questions');
 					var qw = new Question();
@@ -152,6 +152,7 @@ require('../common/api');
 						success: function(){
 							console.log('QUESTION SAVED!!!');
 							//tw.destroy();
+							self.selectedItem = null;
 						},
 						error: function(err){
 							console.error(error);
@@ -164,10 +165,6 @@ require('../common/api');
 					console.error("error", error);
 				}
 			});
-		};
-
-		self.addToQuestions = function(item) {
-
 		};
 
 		function fetch() {

@@ -86,7 +86,7 @@ require('../../../bower_components/angular-youtube-mb/src/angular-youtube-embed'
 				return Api.getQuestions(self.page, self.perpage).then(function(resp) {
 					self.label = "LOAD MORE";
 					self.showList = true;
-					console.log(resp);
+
 					resp.forEach(function(el){
 						self.questions.push(el);
 					});
